@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MediCare — Sistema de Gestión Médica</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/estilos.css"/>
+</head>
+<body>
+<div id="app">
+
+  <!-- ══ PANTALLA DE AUTENTICACIÓN ═════════════════════════════════ -->
+  <div id="pantalla-auth">
+    <div class="auth-hero">
+      <div class="auth-hero-contenido">
+        <div class="auth-logo">
+          <div class="auth-logo-icono">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          </div>
+          <span class="auth-logo-texto">MediCare</span>
+        </div>
+        <h1>Salud en<br/><em>tus manos</em></h1>
+        <p>Sistema integral de gestión médica. Administra tus citas, historial clínico y prescripciones desde un solo lugar.</p>
+      </div>
+      <div class="auth-puntos">
+        <div class="auth-punto activo"></div>
+        <div class="auth-punto"></div>
+        <div class="auth-punto"></div>
+      </div>
+    </div>
+
+    <div class="auth-panel">
+      <div class="auth-form-envolvente">
+        <div class="auth-pestanas">
+          <button class="auth-pestana activa" onclick="mostrarPestanaAuth('login')">Iniciar sesión</button>
+          <button class="auth-pestana" onclick="mostrarPestanaAuth('registro')">Registrarse</button>
+        </div>
+
+        <!-- INICIO DE SESIÓN -->
+        <div id="formulario-login" class="auth-formulario">
+          <h2>Bienvenido</h2>
+          <p class="subtitulo">Ingresa con tu correo y contraseña</p>
+          <div class="campo"><label>Correo electrónico</label><input type="email" id="login-email" placeholder="tu@correo.com"/></div>
+          <div class="campo"><label>Contraseña</label><input type="password" id="login-password" placeholder="••••••"/></div>
+          <button class="btn btn-primario btn-completo" onclick="iniciarSesion()" id="btn-login">Ingresar</button>
+          <p style="margin-top:16px;font-size:13px;color:var(--tinta-tenue);text-align:center;">
+            Datos de prueba: <strong>test@medicare.com</strong> / <strong>123456</strong>
+          </p>
+        </div>
+
+        <!-- REGISTRO -->
+        <div id="formulario-registro" class="auth-formulario" style="display:none;">
+          <h2>Crear cuenta</h2>
+          <p class="subtitulo">Regístrate para acceder al sistema</p>
+          <div class="campo-fila">
+            <div class="campo"><label>Nombre completo</label><input type="text" id="reg-nombre" placeholder="Ana Torres"/></div>
+            <div class="campo"><label>Documento de identidad</label><input type="text" id="reg-doc" placeholder="1234567890"/></div>
+          </div>
+          <div class="campo"><label>Correo electrónico</label><input type="email" id="reg-email" placeholder="tu@correo.com"/></div>
+          <div class="campo"><label>Contraseña</label><input type="password" id="reg-password" placeholder="Mínimo 6 caracteres"/></div>
+          <div class="campo-fila">
+            <div class="campo"><label>Teléfono</label><input type="text" id="reg-telefono" placeholder="3001234567"/></div>
+            <div class="campo"><label>Fecha de nacimiento</label><input type="date" id="reg-nacimiento"/></div>
+          </div>
+          <div class="campo-fila">
+            <div class="campo"><label>Tipo de sangre</label>
+              <select id="reg-sangre">
+                <option value="">— Seleccionar —</option>
+                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+              </select>
+            </div>
+            <div class="campo"><label>Alergias</label><input type="text" id="reg-alergias" placeholder="Ninguna"/></div>
+          </div>
+          <button class="btn btn-primario btn-completo" onclick="registrarse()" id="btn-registrar">Crear cuenta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PANTALLA PRINCIPAL ════════════════════════════════════════ -->
+  <div id="pantalla-principal">
+    <nav class="barra-superior">
+      <div class="barra-izquierda">
+        <div class="logo-barra">Medi<span>Care</span></div>
+        <nav class="nav-barra">
+          <button class="nav-boton activo" data-pagina="dashboard" onclick="irA('dashboard')">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Inicio
+          </button>
+          <button class="nav-boton" data-pagina="citas" onclick="irA('citas')">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Citas
+          </button>
+          <button class="nav-boton" data-pagina="historia" onclick="irA('historia')">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Historia
+          </button>
+          <button class="nav-boton" data-pagina="prescripciones" onclick="irA('prescripciones')">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+            Prescripciones
+          </button>
+          <button class="nav-boton" data-pagina="examenes" onclick="irA('examenes')">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            Exámenes
+          </button>
+        </nav>
+      </div>
+      <div class="barra-derecha">
+        <div class="chip-usuario">
+          <div class="avatar-usuario" id="avatar-usuario">M</div>
+          <span class="nombre-usuario" id="nombre-usuario">Paciente</span>
+        </div>
+        <button class="btn btn-fantasma btn-sm" onclick="cerrarSesion()">Salir</button>
+      </div>
+    </nav>
+
+    <main class="contenido-pagina">
+
+      <!-- DASHBOARD -->
+      <div id="pagina-dashboard" class="pagina activa">
+        <div class="banner-bienvenida">
+          <h2>Buenos días, <em id="nombre-bienvenida">Paciente</em></h2>
+          <p>Aquí tienes un resumen de tu estado de salud</p>
+        </div>
+        <div class="grilla-stats">
+          <div class="tarjeta-stat stat-verde">
+            <div class="stat-icono"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+            <div class="stat-etiqueta">Citas totales</div>
+            <div class="stat-valor" id="stat-citas">—</div>
+          </div>
+          <div class="tarjeta-stat stat-ambar">
+            <div class="stat-icono"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+            <div class="stat-etiqueta">Registros clínicos</div>
+            <div class="stat-valor" id="stat-historia">—</div>
+          </div>
+          <div class="tarjeta-stat stat-rojo">
+            <div class="stat-icono"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg></div>
+            <div class="stat-etiqueta">Prescripciones</div>
+            <div class="stat-valor" id="stat-prescripciones">—</div>
+          </div>
+          <div class="tarjeta-stat stat-tinta">
+            <div class="stat-icono"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+            <div class="stat-etiqueta">Exámenes</div>
+            <div class="stat-valor" id="stat-examenes">—</div>
+          </div>
+        </div>
+
+        <div class="tarjeta">
+          <div class="tarjeta-cabecera">
+            <div><div class="tarjeta-titulo">Próximas citas</div><div class="tarjeta-subtitulo">Citas pendientes o confirmadas</div></div>
+            <button class="btn btn-primario btn-sm" onclick="irA('citas')">Ver todas</button>
+          </div>
+          <div id="dashboard-citas-lista"></div>
+        </div>
+      </div>
+
+      <!-- CITAS -->
+      <div id="pagina-citas" class="pagina">
+        <div class="cabecera-pagina">
+          <h1>Mis <span>citas</span></h1>
+          <p>Administra tus citas médicas</p>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-cabecera">
+            <div class="tarjeta-titulo">Todas las citas</div>
+            <button class="btn btn-primario btn-sm" onclick="abrirModal('modal-nueva-cita')">+ Nueva cita</button>
+          </div>
+          <div id="citas-lista" class="tabla-envolvente"></div>
+        </div>
+      </div>
+
+      <!-- HISTORIA CLÍNICA -->
+      <div id="pagina-historia" class="pagina">
+        <div class="cabecera-pagina">
+          <h1>Historia <span>clínica</span></h1>
+          <p>Tu historial médico completo</p>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-cabecera">
+            <div class="tarjeta-titulo">Registros clínicos</div>
+            <button class="btn btn-primario btn-sm" onclick="abrirModal('modal-nueva-historia')">+ Nuevo registro</button>
+          </div>
+          <div id="historia-lista" class="tabla-envolvente"></div>
+        </div>
+      </div>
+
+      <!-- PRESCRIPCIONES -->
+      <div id="pagina-prescripciones" class="pagina">
+        <div class="cabecera-pagina">
+          <h1>Mis <span>prescripciones</span></h1>
+          <p>Medicamentos recetados por tus médicos</p>
+        </div>
+        <div id="prescripciones-lista"></div>
+      </div>
+
+      <!-- EXÁMENES -->
+      <div id="pagina-examenes" class="pagina">
+        <div class="cabecera-pagina">
+          <h1>Exámenes <span>médicos</span></h1>
+          <p>Solicita y consulta tus exámenes</p>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-cabecera">
+            <div class="tarjeta-titulo">Mis exámenes</div>
+            <button class="btn btn-primario btn-sm" onclick="abrirModal('modal-nuevo-examen')">+ Solicitar examen</button>
+          </div>
+          <div id="examenes-lista" class="tabla-envolvente"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ══ MODALES ════════════════════════════════════════════════════ -->
+
+  <!-- Modal: Nueva Cita -->
+  <div class="fondo-modal" id="modal-nueva-cita">
+    <div class="modal">
+      <div class="modal-cabecera">
+        <div class="modal-titulo">Agendar cita</div>
+        <button class="modal-cerrar" onclick="cerrarModal('modal-nueva-cita')">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="campo"><label>Médico</label><input type="text" id="cita-doctor" placeholder="Dr. Alejandro Pérez"/></div>
+      <div class="campo"><label>Especialidad</label><input type="text" id="cita-especialidad" placeholder="Medicina General"/></div>
+      <div class="campo"><label>Fecha y hora</label><input type="datetime-local" id="cita-fecha"/></div>
+      <div class="campo"><label>Motivo de consulta</label><textarea id="cita-motivo" placeholder="Describa el motivo de su consulta..."></textarea></div>
+      <div class="campo"><label>Notas adicionales (opcional)</label><textarea id="cita-notas" placeholder="Información adicional..."></textarea></div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" onclick="cerrarModal('modal-nueva-cita')">Cancelar</button>
+        <button class="btn btn-primario" onclick="crearCita()" id="btn-crear-cita">Agendar cita</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Nueva Historia Clínica -->
+  <div class="fondo-modal" id="modal-nueva-historia">
+    <div class="modal">
+      <div class="modal-cabecera">
+        <div class="modal-titulo">Nuevo registro clínico</div>
+        <button class="modal-cerrar" onclick="cerrarModal('modal-nueva-historia')">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="campo"><label>Médico</label><input type="text" id="hist-doctor" placeholder="Dr. García"/></div>
+      <div class="campo"><label>Síntomas</label><textarea id="hist-sintomas" placeholder="Describa los síntomas presentados..."></textarea></div>
+      <div class="campo"><label>Diagnóstico</label><textarea id="hist-diagnostico" placeholder="Diagnóstico médico..."></textarea></div>
+      <div class="campo"><label>Tratamiento</label><textarea id="hist-tratamiento" placeholder="Tratamiento indicado..."></textarea></div>
+      <div class="campo"><label>Fecha de visita</label><input type="datetime-local" id="hist-fecha"/></div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" onclick="cerrarModal('modal-nueva-historia')">Cancelar</button>
+        <button class="btn btn-primario" onclick="crearHistoria()" id="btn-crear-historia">Guardar registro</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Nuevo Examen -->
+  <div class="fondo-modal" id="modal-nuevo-examen">
+    <div class="modal">
+      <div class="modal-cabecera">
+        <div class="modal-titulo">Solicitar examen</div>
+        <button class="modal-cerrar" onclick="cerrarModal('modal-nuevo-examen')">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="campo"><label>Tipo de examen</label><input type="text" id="exam-tipo" placeholder="Hemograma completo, ECG..."/></div>
+      <div class="campo"><label>Médico solicitante</label><input type="text" id="exam-doctor" placeholder="Dr. Pérez"/></div>
+      <div class="campo"><label>Motivo</label><textarea id="exam-motivo" placeholder="Motivo del examen..."></textarea></div>
+      <div class="campo"><label>Fecha programada (opcional)</label><input type="datetime-local" id="exam-fecha"/></div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" onclick="cerrarModal('modal-nuevo-examen')">Cancelar</button>
+        <button class="btn btn-primario" onclick="crearExamen()" id="btn-crear-examen">Solicitar examen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Detalle Historia Clínica -->
+  <div class="fondo-modal" id="modal-detalle-historia">
+    <div class="modal">
+      <div class="modal-cabecera">
+        <div class="modal-titulo">Detalle del registro</div>
+        <button class="modal-cerrar" onclick="cerrarModal('modal-detalle-historia')">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="historia-detalle-contenido"></div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" onclick="cerrarModal('modal-detalle-historia')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor de notificaciones -->
+  <div id="contenedor-notificaciones"></div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
